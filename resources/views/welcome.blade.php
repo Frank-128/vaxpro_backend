@@ -1,37 +1,14 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title></title>
 </head>
-<body>
-    @vite('resources/js/app.js')
-
-    <h1>User id is {{Auth::id()}}</h1>
+<body style="display:flex;justify-content:items-center;align-items:items-center; ">
+  <h1 style="color:darkblue;font-size:49px;">
+  Welcome to VaxPro
+  </h1>   
 </body>
-<script>
-   
-    //  setTimeout(() => {
-    //         window.Echo.channel('testChannel')
-    //             .listen('testingEvent', (e) => {
-    //                 console.log(e);
-    //             })
-    //     }, 200);
-
-    // setTimeout(() => {
-    //         window.Echo.private('private.{{Auth::id()}}')
-    //             .listen('PrivateEvent', (e) => {
-    //                 console.log(e);
-    //             })
-    //     }, 200);
-
-    setTimeout(() => {
-        window.Echo.private('chat.{{Auth::id()}}')
-            .listen('MessageSent', (e) => {
-                console.log(e);
-            })
-    }, 200);   
-
-</script>
 </html>
