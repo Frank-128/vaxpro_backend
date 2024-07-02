@@ -8,14 +8,15 @@ use Illuminate\Database\Eloquent\Model;
 class Child extends Model
 {
     use HasFactory;
-    protected $primaryKey = 'card_no';
 
     public $incrementing = false;
-
+    protected $primaryKey = 'card_no';
     protected $keyType = 'string';
 
 
-    protected $fillable = ['card_no', 'firstname', 'middlename', 'surname','gender', 'facility_id', 'ward_id',  'house_no', 'date_of_birth', 'modified_by'];
+    protected $fillable = ['card_no', 'firstname', 'middlename', 'surname', 'gender', 'facility_id', 'ward_id', 'house_no', 'date_of_birth', 'modified_by'];
+
+
 
 
     public function bookings()
@@ -44,7 +45,7 @@ class Child extends Model
 
     public function facilities()
     {
-        return $this->belongsTo(Facility::class, null, 'card_no');
+        return $this->belongsTo(Facility::class, 'facility_id', 'facility_reg_no');
     }
 
     public function ward()
@@ -59,11 +60,12 @@ class Child extends Model
 
     public function parents_guardians()
     {
-        return $this->belongsToMany(ParentsGuardians::class, 'parents_guardians_children','card_no','nida_id',)->withPivot('relationship_with_child');
+        return $this->belongsToMany(ParentsGuardians::class, 'parents_guardians_children', 'card_no', 'nida_id',)->withPivot('relationship_with_child');
 
     }
 
-    public function certificates(){
+    public function certificates()
+    {
         return $this->hasOne(Certificates::class, 'child_id', 'card_no');
     }
 
