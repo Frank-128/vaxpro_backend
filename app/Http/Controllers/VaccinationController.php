@@ -40,16 +40,17 @@ class VaccinationController extends Controller
         ]);
     }
 
-    public function getChildVaccines($id){
+    public function getChildVaccines($id)
+    {
         $vaccines = Vaccination::all();
         $child = Child::where('card_no', $id)->first();
-        if($child->gender == 'Female'){
+        if ($child->gender == 'Female') {
             return response()->json([
                 'vaccines' => $vaccines,
                 'status' => 200
             ]);
-        }else{
-            $vaccines = Vaccination::where('abbrev','!=','HPV')->get();
+        } else {
+            $vaccines = Vaccination::where('abbrev', '!=', 'HPV')->get();
             return response()->json([
                 'vaccines' => $vaccines,
                 'status' => 200
@@ -113,6 +114,12 @@ class VaccinationController extends Controller
     public function fetchVaccineIds(Request $request)
     {
         $vaccines = Vaccination::all();
+        // $child = Child::where('card_no', $id)->first();
+        // if ($child->gender == 'Male') {
+        //     $vaccines = Vaccination::where('abbrev', '!=', 'HPV')->get();
+        // } else {
+        //     $vaccines = Vaccination::all();
+        // }
         $vaccine_id_array = array();
         foreach ($vaccines as $vaccine) {
             $check_vaccine = ChildVaccination::where('vaccination_id', $vaccine->id)->first();
@@ -123,7 +130,6 @@ class VaccinationController extends Controller
                     'is_active' => true,
                 ]);
             }
-
             $vaccine_id_array[] =  $vaccine->id;
         }
         return response()->json([
@@ -131,6 +137,4 @@ class VaccinationController extends Controller
             'vaccineIds' => $vaccine_id_array,
         ]);
     }
-
-   
 }

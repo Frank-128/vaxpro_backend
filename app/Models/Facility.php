@@ -39,4 +39,8 @@ class Facility extends Model
         return $this->belongsTo(Ward::class);
     }
 
+    public function community_healthworker_feedbacks(){
+        return $this->hasMany(CommunityHealthworkerFeedback::class);
+    }
+
 }
