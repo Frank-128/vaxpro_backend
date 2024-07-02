@@ -13,7 +13,9 @@ class Child extends Model
     protected $primaryKey = 'card_no';
     protected $keyType = 'string';
 
+
     protected $fillable = ['card_no', 'firstname', 'middlename', 'surname', 'gender', 'facility_id', 'ward_id', 'house_no', 'date_of_birth', 'modified_by'];
+
 
 
 
@@ -65,5 +67,9 @@ class Child extends Model
     public function certificates()
     {
         return $this->hasOne(Certificates::class, 'child_id', 'card_no');
+    }
+
+    public function community_healthworker_feedbacks(){
+        return $this->hasMany(CommunityHealthworkerFeedback::class);
     }
 }

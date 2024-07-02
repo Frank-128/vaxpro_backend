@@ -27,4 +27,12 @@ class FeedbackController extends Controller
             'status' => 200
         ]);
     }
+
+    public function getFacilityFeedback($id)
+    {
+        $feedbacks = CommunityHealthworkerFeedback::where('facility_id', $id)->with(['child', 'facility'])->get();
+        return response()->json([
+            'feedbacks' => $feedbacks,
+        ], 200);
+    }
 }

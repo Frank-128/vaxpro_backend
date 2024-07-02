@@ -38,6 +38,7 @@ Route::get('fetchVaccineIds', [VaccinationController::class, 'fetchVaccineIds'])
 Route::post('updateSelectedVacs', [VaccinationSchedulesController::class,'updateSelectedVacs']);
 Route::post('updateChildParentInfo', [ChildController::class,'updateChildParentInfo']);
 Route::post('submitFeedback', [FeedbackController::class, 'submitFeedback']);
+Route::get('getFacilityFeedback/{id}', [FeedbackController::class, 'getFacilityFeedback']);
 
 
 Route::middleware(['auth:sanctum', 'tokenExpiration'])->group(function () {

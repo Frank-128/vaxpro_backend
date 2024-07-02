@@ -235,6 +235,7 @@ class VaccinationSchedulesController extends Controller
                 'vaccination_date' => $request->selected_date,
                 'next_vaccination_date' => $next_date,
                 'status' => false,
+                'within_facility' => $request->vaccination_area
 
             ]);
 
