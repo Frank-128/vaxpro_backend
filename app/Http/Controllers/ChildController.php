@@ -79,10 +79,7 @@ class ChildController extends Controller
 
             if($parent){
                 $postData = [
-
-
-                    'message' => 'Ndugu mzazi wa '.$child->firstname.' '.$child->surname.''.'Umesajiliwa kikamilifu kwenye mfumo wa VaxPro, tumia password-'. $password. " na Profile id " . $user["uid"],
-
+                    'message' => 'Ndugu mzazi wa '.$child->firstname.' '.$child->surname.' '.'Umesajiliwa kikamilifu kwenye mfumo wa VaxPro, tumia password  '. $password. " na Profile id " . $user["uid"],
                     'recipient' => $user->contacts
                 ];
 
@@ -465,4 +462,9 @@ class ChildController extends Controller
             return "Error updating nida number: " . $e->getMessage();
         }
     }
+
+    public function child_data($id){
+
+    }
+
 }

@@ -35,7 +35,7 @@ class CertificatesController extends Controller
         ]);
 
        if($certificate){
-           return response()->json(["message"=>"Certificate Stored Successfully", "status"=>201]);
+           return response()->json(["message"=>"Certificate Stored Successfully", "status"=>201, 'data'=>$certificate] );
        } else {
            return response()->json(["message"=>"Certificate Store Failed", "status"=>500]);
        }
@@ -49,7 +49,7 @@ class CertificatesController extends Controller
             return response()->json(['error' => 'Certificate not found'], 404);
         }
 
-        return response()->json($certificate, 200);
+        return response()->json($certificate, 201);
     }
 
 }
