@@ -28,11 +28,12 @@ class FeedbackController extends Controller
         ]);
     }
 
-    public function getFacilityFeedback($id)
+    public function getFeedback($facility_ids)
     {
-        $feedbacks = CommunityHealthworkerFeedback::where('facility_id', $id)->with(['child', 'facility'])->get();
+        $facilityIdsArray = explode(',', $facility_ids);
+        $feedbacks = CommunityHealthworkerFeedback::whereIn('facility_id', $facilityIdsArray)->with(['child', 'facility.ward'])->get();
         return response()->json([
-            'feedbacks' => $feedbacks,
+            'feedbacks' => $feedbacks
         ], 200);
     }
 }
