@@ -37,9 +37,9 @@ class AuthController extends Controller
         ]);
 
         if ($validate->fails()) {
-            return response()->json(["error" => "contacts", "message" => "This contact is already taken"], 400);
+            return response()->json(["error" => "contacts", "message" => "Account with this phone number already exists"], 400);
         }
-     
+
 
         if ($request->has("ward_id")) {
 
@@ -180,28 +180,32 @@ class AuthController extends Controller
     {
         $credentials = $request->only(["contacts", "password"]);
 
-        $contacts = preg_replace('/^0/', '+255', $credentials['contacts']);
-
-        $validator = Validator::make(['contacts' => $contacts], [
-            "contacts" => [
-                "required",
-                "min:13",
-                "max:13",
-                "regex:/^\+255/",
-            ],
-        ]);
-    
-        if ($validator->fails()) {
-            return response()->json("Invalid phone number format", 400);
-        }
+//        $contacts = preg_replace('/^0/', '+255', $credentials['contacts']);
+//
+//        $validator = Validator::make(['contacts' => $contacts], [
+//            "contacts" => [
+//                "required",
+//                "min:13",
+//                "max:13",
+//                "regex:/^\+255/",
+//            ],
+//        ]);
+//
+//        if ($validator->fails()) {
+//            return response()->json("Invalid phone number format", 400);
+//        }
 
         if (Auth::attempt($credentials)) {
+            
+            if(Auth::user()->role->account_type=="parent"){
+                $token = $request->user()->createToken("vaxPro")->plainTextToken;
+                return response()->json(
+                    $token,
+                    200
+                );
+            }
 
-            $token = $request->user()->createToken("vaxPro")->plainTextToken;
-            return response()->json(
-                $token,
-                200
-            );
+            return response()->json("Phonenumber or password is incorrect", 401);
         } else
             return response()->json("Phonenumber or password is incorrect", 401);
     }

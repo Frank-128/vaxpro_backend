@@ -55,6 +55,8 @@ Route::middleware(['auth:sanctum', 'tokenExpiration'])->group(function () {
     Route::delete('/user/{id}', [UserController::class, 'destroy']);
     Route::get('/all_users/{id}', [UserController::class, 'allUsers']);
 
+    // child vaccination details
+    Route::get('/child_vaccinations/{id}', [UserController::class, 'childData']);
 
     //address endpoints
     Route::get('districts_wards/{district_id}', [WardController::class, 'districts_wards']);
@@ -65,9 +67,8 @@ Route::middleware(['auth:sanctum', 'tokenExpiration'])->group(function () {
     //certificates
 
     // booking endpoints
-    Route::post('add_booking', [BookingController::class, 'store']);
 
-    // report endpoints 
+    // report endpoints
     Route::post('reports',[ReportController::class,'reportData']);
 
     //send msg endpoint
@@ -82,7 +83,7 @@ Route::post("/certificates", [CertificatesController::class,"store"]);
 Route::get("/certificates/{id}", [CertificatesController::class,"show"]);
 Route::get("/get_certificate_status/{id}", [CertificatesController::class,"get_certificate_status"]);
 
-
+Route::post('add_booking', [BookingController::class, 'store']);
 Route::get('hospital_bookings/{id}', [BookingController::class,'show']);
 Route::get("indexBooking/{card_no}", [BookingController::class,'indexBooking']);
 Route::put('/update_booking/{id}', [BookingController::class, 'update']);

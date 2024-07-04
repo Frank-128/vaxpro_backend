@@ -39,6 +39,7 @@ class CertificatesController extends Controller
         } else {
             return response()->json(["message" => "Certificate Store Failed", "status" => 500]);
         }
+
     }
 
     public function show(string $card_no): JsonResponse
@@ -46,10 +47,10 @@ class CertificatesController extends Controller
         $certificate = Certificates::where('child_id', $card_no)->first();
 
         if (!$certificate) {
-            return response()->json(['error' => 'Certificate not found'], 404);
+            return response()->json(['error' => 'Certificate not found']);
         }
 
-        return response()->json($certificate, 200);
+        return response()->json($certificate, 201);
     }
 
     public function get_certificate_status(string $card_no): JsonResponse
