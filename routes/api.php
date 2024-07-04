@@ -34,11 +34,12 @@ Route::get('getVacSchedules/{id}', [VaccinationSchedulesController::class, 'getV
 Route::post('updateChildVacSchedule', [VaccinationSchedulesController::class, 'updateChildVacSchedule']);
 Route::get('getChildVaccines/{id}', [VaccinationController::class, 'getChildVaccines']);
 Route::post('all_children',[ChildController::class,'children_data']);
-Route::get('fetchVaccineIds', [VaccinationController::class, 'fetchVaccineIds']);
+Route::get('fetchVaccineIds/{id}', [VaccinationController::class, 'fetchVaccineIds']);
 Route::post('updateSelectedVacs', [VaccinationSchedulesController::class,'updateSelectedVacs']);
 Route::post('updateChildParentInfo', [ChildController::class,'updateChildParentInfo']);
 Route::post('submitFeedback', [FeedbackController::class, 'submitFeedback']);
-Route::get('getFacilityFeedback/{id}', [FeedbackController::class, 'getFacilityFeedback']);
+Route::get('getFeedback/{facility_ids}', [FeedbackController::class, 'getFeedback']);
+Route::get('isVaccinationComplete/{id}', [VaccinationController::class, 'isVaccinationComplete']);
 
 
 Route::middleware(['auth:sanctum', 'tokenExpiration'])->group(function () {
@@ -47,6 +48,7 @@ Route::middleware(['auth:sanctum', 'tokenExpiration'])->group(function () {
     Route::post('/register', [AuthController::class, 'register']);
     Route::patch('update_user/{id}', [AuthController::class, 'update']);
     Route::post('/logout', [AuthController::class, 'logout']);
+    Route::post('/comm_health_worker_logout', [AuthController::class, 'comm_health_worker_logout']);
 
     //user endpoints
     Route::get('/user', [UserController::class, 'userData']);
@@ -79,6 +81,7 @@ Route::delete('delete_role/{id}', [RoleController::class, 'destroy']);
 
 Route::post("/certificates", [CertificatesController::class,"store"]);
 Route::get("/certificates/{id}", [CertificatesController::class,"show"]);
+Route::get("/get_certificate_status/{id}", [CertificatesController::class,"get_certificate_status"]);
 
 Route::post('add_booking', [BookingController::class, 'store']);
 Route::get('hospital_bookings/{id}', [BookingController::class,'show']);
@@ -144,5 +147,6 @@ Route::post('sms', [SMSController::class, 'sms_oasis']);
 
 
 Route::post('/login', [AuthController::class, 'login']);
+Route::post('/comm_health_worker_login', [AuthController::class, 'comm_health_worker_login']);
 Route::post('/parent_login', [AuthController::class, 'parent_login']);
 

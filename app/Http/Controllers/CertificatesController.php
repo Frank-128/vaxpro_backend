@@ -14,31 +14,32 @@ class CertificatesController extends Controller
     public function store(Request $request): JsonResponse
     {
         $request->validate([
-            "certificate"=>'file|mimes:pdf|max:2048',
-            "hpv_certificate"=>"file|mimes:pdf|max:2048",
-            "child_id"=>"required"
+            "certificate" => 'file|mimes:pdf|max:2048',
+            "hpv_certificate" => "file|mimes:pdf|max:2048",
+            "child_id" => "required"
         ]);
 
         $certificatesPath = null;
         $hpvCertificatesPath = null;
 
         $request->hasFile("certificate") &&
-            $certificatesPath = $request->file('certificate')->store('certificates','public');
+            $certificatesPath = $request->file('certificate')->store('certificates', 'public');
 
         $request->hasFile("hpv_certificate") &&
             $hpvCertificatesPath = $request->file('hpv_certificate')->store('public/hpv_certificates');
 
-       $certificate =  Certificates::create([
-              "certificate"=>$certificatesPath,
-            "hpv_certificate"=>$hpvCertificatesPath,
-             "child_id"=>$request->child_id
+        $certificate =  Certificates::create([
+            "certificate" => $certificatesPath,
+            "hpv_certificate" => $hpvCertificatesPath,
+            "child_id" => $request->child_id
         ]);
 
-       if($certificate){
-           return response()->json(["message"=>"Certificate Stored Successfully", "status"=>201, 'data'=>$certificate] );
-       } else {
-           return response()->json(["message"=>"Certificate Store Failed", "status"=>500]);
-       }
+        if ($certificate) {
+            return response()->json(["message" => "Certificate Stored Successfully", "status" => 201]);
+        } else {
+            return response()->json(["message" => "Certificate Store Failed", "status" => 500]);
+        }
+
     }
 
     public function show(string $card_no): JsonResponse
@@ -52,4 +53,14 @@ class CertificatesController extends Controller
         return response()->json($certificate, 201);
     }
 
+    public function get_certificate_status(string $card_no): JsonResponse
+    {
+        $certificate = Certificates::where('child_id', $card_no)->first();
+
+        if ($certificate) {
+            return response()->json(['response' => true], 200);
+        }
+
+        return response()->json(['response' => false]);
+    }
 }

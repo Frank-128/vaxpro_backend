@@ -45,6 +45,7 @@ class VaccinationReminderJob implements ShouldQueue
 
                     'message' => 'Ndugu mzazi unakumbushwa kua umepitiliza muda wa kufika katika kituo cha kutoa huduma ya chanjo kwa ajili ya mtoto wako ' . $child->child->firstname . " " . $child->child->middlename . " " . $child->child->surname,
                     'recipient' => $child->child->parents_guardians->first()->user->contacts 
+                   
                 ];
 
                 $communityWorker = User::where('role_id', 12)->where('ward_id', $child->ward_id)->inRandomOrder()->first();
@@ -68,7 +69,7 @@ class VaccinationReminderJob implements ShouldQueue
                 $postData = [
 
                     'message' => 'Ndugu mzazi unakumbushwa kufika katika kituo cha kutoa huduma ya chanjo kwa ajili ya mtoto wako ' . $child->child->firstname . " " . $child->child->middlename . " " . $child->child->surname . " mnamo tarehe" . $child->next_vaccination_date,
-                    'recipient' => "255744232224"
+                    'recipient' => "255747954988"
                 ];
                 Log::info("This is the post message sent", [$postData['message']]);
                 $this->smsService->sms_oasis($postData);
