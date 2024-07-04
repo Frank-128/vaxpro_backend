@@ -80,7 +80,6 @@ class UserController extends Controller
         $loggedInUser = User::find($request->id);
         switch ($loggedInUser->role->account_type) {
             case "ministry":
-
                 return $allUsers = User::whereHas('role', function ($query) {
                     $query->where('account_type', "ministry")->orWhere('account_type', 'regional')->where('role', "IT admin");
                 })->with(['role', 'region'])->get();
@@ -89,6 +88,8 @@ class UserController extends Controller
                 return $allUsers = User::where('district_id', $loggedInUser->district->id)->with(['role', 'district', 'ward'])->get();
             case 'regional':
                 return $allUsers = User::where('region_id', $loggedInUser->region_id)->with(['role', 'district', 'ward'])->get();
+                case 'branch_manager':
+                    return $allUsers = User::where("facility_id", $loggedInUser->facility_id)->with(['role','health_workers'])->get();
         }
         $allUsers = User::with(['role', 'district', 'region'])->get();
 
