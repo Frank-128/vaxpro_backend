@@ -24,6 +24,11 @@ class ChatMessageController extends Controller
         return response()->json(['receiver'=>$receiver->id,'sender'=>$sender->id]);
     }
 
+
+    // function chatBotMessage(Request $request){
+
+    // }
+
     public function getMessages(Request $request){
         
         $receiver = $request->receiver;

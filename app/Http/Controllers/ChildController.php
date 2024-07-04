@@ -67,6 +67,10 @@ class ChildController extends Controller
                 'ward_id' => $ward_id,
             ]);
 
+            if(!$user){
+                return response()->json('Parent not added not added!',400);
+            }
+
             $parent = ParentsGuardians::create([
                 'firstname' => $request->par_first_name,
                 'middlename' => $request->par_middle_name,
@@ -139,10 +143,7 @@ class ChildController extends Controller
                 "birthDate" => $child->date_of_birth
             ], 200);
         }
-        return response()->json([
-            'message' => 'Child not added!',
-            'status' => 400,
-        ], 400);
+        return response()->json('Child not added please try again later', 400);
     }
 
     public function children(Request $request)
@@ -372,6 +373,11 @@ class ChildController extends Controller
 
 
             if ($request->original_card_no !== $request->child_parent_data['card_no']) {
+
+                if(Child::where('card_no',$request->child_parent_data['card_no'])->exists()){
+                    return response()->json(["type"=>"card_no","message"=>"Card no already exists"],400);
+                }
+
                 $child_card_number = $request->child_parent_data['card_no'];
                 $this->updateCardNo($request->original_card_no, $request->child_parent_data['card_no']);
             }
@@ -381,8 +387,7 @@ class ChildController extends Controller
                 $this->updateNidaNo($request->original_nida_no, $request->child_parent_data['nida_id']);
             }
 
-
-
+           
 
             return response()->json([
                 'message' => 'Information Updated Successfully!',
