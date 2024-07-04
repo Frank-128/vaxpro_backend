@@ -46,7 +46,7 @@ class CertificatesController extends Controller
         $certificate = Certificates::where('child_id', $card_no)->first();
 
         if (!$certificate) {
-            return response()->json(['error' => 'Certificate not found'], 404);
+            return response()->json(['error' => 'Certificate not found']);
         }
 
         return response()->json($certificate, 201);

@@ -37,7 +37,7 @@ class AuthController extends Controller
         ]);
 
         if ($validate->fails()) {
-            return response()->json(["error" => "contacts", "message" => "This contact is already taken"], 400);
+            return response()->json(["error" => "contacts", "message" => "Account with this phone number already exists"], 400);
         }
 
 
@@ -183,12 +183,16 @@ class AuthController extends Controller
 //        }
 
         if (Auth::attempt($credentials)) {
+            
+            if(Auth::user()->role->account_type=="parent"){
+                $token = $request->user()->createToken("vaxPro")->plainTextToken;
+                return response()->json(
+                    $token,
+                    200
+                );
+            }
 
-            $token = $request->user()->createToken("vaxPro")->plainTextToken;
-            return response()->json(
-                $token,
-                200
-            );
+            return response()->json("Phonenumber or password is incorrect", 401);
         } else
             return response()->json("Phonenumber or password is incorrect", 401);
     }
