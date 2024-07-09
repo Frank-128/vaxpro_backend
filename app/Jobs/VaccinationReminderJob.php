@@ -44,10 +44,22 @@ class VaccinationReminderJob implements ShouldQueue
                 $postData = [
 
                     'message' => 'Ndugu mzazi unakumbushwa kua umepitiliza muda wa kufika katika kituo cha kutoa huduma ya chanjo kwa ajili ya mtoto wako ' . $child->child->firstname . " " . $child->child->middlename . " " . $child->child->surname,
-                    'recipient' => $child->child->parents_guardians->first()->user->contacts 
+                    'recipient' => $child->child->parents_guardians->first()->user->contacts
                 ];
 
-                $communityWorker = User::where('role_id', 12)->where('ward_id', $child->ward_id)->inRandomOrder()->first();
+                $communityWorker = User::whereHas('role',function($query){
+                    $query->where('account_type','community_health_worker');
+                })->where('ward_id', $child->ward_id)->inRandomOrder()->first();
+
+                $postDataCommunity = [
+
+                    'message' => 'Mzazi wa mtoto ' . $child->child->firstname . " " . $child->child->middlename . " " . $child->child->surname . ' hakufika katika kituo cha huduma ya afya '.$child->facilities->facility_name.' ' .$child->facilities->facility_reg_no.' kwa ajili ya chanjo. Tafadhali wasiliana nae kupitia nambari ya simu ' . $child->child->parents_guardians->first()->user->contacts . ' kwa ajili ya taarifa zaidi',
+                    'recipient' => '255714179152'
+
+                ];
+                Log::info("This is the post message sent", [$postDataCommunity]);
+                $this->smsService->sms_oasis($postDataCommunity);
+
                 Log::info("This is the post message sent", [$postData]);
                 $this->smsService->sms_oasis($postData);
                 if ($communityWorker) {
@@ -55,7 +67,7 @@ class VaccinationReminderJob implements ShouldQueue
 
                         'message' => 'Mzazi wa mtoto ' . $child->child->firstname . " " . $child->child->middlename . " " . $child->child->surname . ' hakufika katika kituo cha huduma ya afya '.$child->facilities->facility_name.' ' .$child->facilities->facility_reg_no.' kwa ajili ya chanjo. Tafadhali wasiliana nae kupitia nambari ya simu ' . $child->child->parents_guardians->first()->user->contacts . ' kwa ajili ya taarifa zaidi',
                         'recipient' => $communityWorker->contacts
-                        
+
                     ];
                     Log::info("This is the post message sent", [$postDataCommunity]);
                     $this->smsService->sms_oasis($postDataCommunity);

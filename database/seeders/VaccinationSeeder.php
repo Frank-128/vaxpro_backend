@@ -59,9 +59,11 @@ class VaccinationSeeder extends Seeder
 
         $vaccinations = Vaccination::all();
         $children = Child::all();
-        $health_worker = User::where('role_id',11)->first();
-        
-        
+        $health_worker = User::whereHas("role",function ($query){
+            $query->where('account_type','health_worker');
+        })->first();
+
+
         foreach ($children as $child) {
             foreach ($vaccinations as $vaccination) {
                 $childVaccination = ChildVaccination::create([
@@ -83,7 +85,7 @@ class VaccinationSeeder extends Seeder
                     $doseInterval = $intervals[$i];
                     $vaccinationDate = Carbon::now()->addDays($doseInterval);
                     $nextVaccinationDate = $i < $frequency - 1 ? Carbon::now()->addDays($intervals[$i + 1]) : null;
-                    
+
                     ChildVaccinationSchedule::create([
                         'child_vaccination_id' => $childVaccination->id,
                         'child_id' => $child->card_no,
@@ -98,9 +100,9 @@ class VaccinationSeeder extends Seeder
             }
         }
 
-        
 
-        
+
+
 
         $json_promotion = file_get_contents(database_path('json/promotion.json'));
         $promotions = json_decode($json_promotion, true);

@@ -24,7 +24,9 @@ class ParentsGuardiansFactory extends Factory
             'firstname' => $this->faker->firstName,
             'middlename' => $this->faker->firstName,
             'lastname' => $this->faker->lastName,
-            'user_id' => User::where("role_id", 13)->get()->random()->id,
+            'user_id' => User::whereHas("role",function ($query){
+                $query->where('account_type','parent');
+            })->get()->random()->id,
         ];
     }
 }
