@@ -37,7 +37,7 @@ class AuthController extends Controller
         ]);
 
         if ($validate->fails()) {
-            return response()->json(["error" => "contacts", "message" => "This contact is already taken"], 400);
+            return response()->json(["error" => "contacts", "message" => "Account with this phone number already exists"], 400);
         }
 
 
@@ -163,6 +163,19 @@ class AuthController extends Controller
             return response()->json(["message" => "user not found", "status" => 404,]);
     }
 
+    public function comm_health_worker_login(Request $request): JsonResponse
+    {
+        $credentials = $request->only(["uid", "password"]);
+
+        if (Auth::attempt($credentials)) {
+
+            $token = $request->user()->createToken("vaxPro")->plainTextToken;
+
+            return response()->json(["token" => $token, "message" => "logged in", "status" => 200,]);
+        } else
+            return response()->json(["message" => "user not found", "status" => 404,]);
+    }
+
     public function parent_login(Request $request): JsonResponse
     {
         $credentials = $request->only(["contacts", "password"]);
@@ -183,18 +196,28 @@ class AuthController extends Controller
 //        }
 
         if (Auth::attempt($credentials)) {
+            
+            if(Auth::user()->role->account_type=="parent"){
+                $token = $request->user()->createToken("vaxPro")->plainTextToken;
+                return response()->json(
+                    $token,
+                    200
+                );
+            }
 
-            $token = $request->user()->createToken("vaxPro")->plainTextToken;
-            return response()->json(
-                $token,
-                200
-            );
+            return response()->json("Phonenumber or password is incorrect", 401);
         } else
             return response()->json("Phonenumber or password is incorrect", 401);
     }
 
 
     public function logout(Request $request): JsonResponse
+    {
+        $request->user()->tokens()->where('id', $request->user()->currentAccessToken()->id)->delete();
+        return response()->json('Logged out successfully', 200);
+    }
+
+    public function comm_health_worker_logout(Request $request): JsonResponse
     {
         $request->user()->tokens()->where('id', $request->user()->currentAccessToken()->id)->delete();
         return response()->json('Logged out successfully', 200);
