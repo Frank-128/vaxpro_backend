@@ -31,40 +31,22 @@ class VaccinationPromotionJob implements ShouldQueue
      */
     public function handle(): void
     {
-        //
-//        $randomMessage = Notification::inRandomOrder()->first();
-        $postData = [
+        
 
-//            'message' => $randomMessage->message,
-//                'recipient' =>'255745884099'
-//             'recipient' =>$parent->user->contacts
-        ];
+        
 
-//        $this->smsService->sendSms($postData);
+        $parent_guardians = ParentsGuardians::all();
 
-         $parent_guardians = ParentsGuardians::all();
+        foreach ($parent_guardians as $parent) {
+            $randomMessage = Notification::inRandomOrder()->first();
+            Log::info("This is the post message sent", [$randomMessage->message, $parent->user->contacts]);
+            $postData = [
 
-         foreach ($parent_guardians as $parent) {
-             $randomMessage = Notification::inRandomOrder()->first();
-             Log::info("This is the post message sent", [$randomMessage->message,$parent->user->contacts]);
-             $postData = [
+                'message' => $randomMessage->message,
 
-                 'message' => $randomMessage->message,
-//                     'recipient' =>'255745884099'
-                  'recipient' =>$parent->user->contacts
-             ];
-              $this->smsService->sms_oasis($postData);
-             }
-
-        // $randomMessage = Notification::inRandomOrder()->first();
-        // // Log::info("This is the post message sent", [$randomMessage->message,$parent->user->contacts]);
-        // $postData = [
-
-        //     'message' => $randomMessage->message,
-        //     'recipient' =>'255745884099'
-        // ];
-        //$this->smsService->sms_oasis($postData);
-
-
+                'recipient' => $parent->user->contacts
+            ];
+            $this->smsService->sms_oasis($postData);
+        }
     }
 }
