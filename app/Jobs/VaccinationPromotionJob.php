@@ -32,19 +32,27 @@ class VaccinationPromotionJob implements ShouldQueue
     public function handle(): void
     {
         //
-        
-        $parent_guardians = ParentsGuardians::all();
-
-        foreach ($parent_guardians as $parent) {
-            $randomMessage = Notification::inRandomOrder()->first();   
+        $randomMessage = Notification::inRandomOrder()->first();   
             Log::info("This is the post message sent", [$randomMessage->message,$parent->user->contacts]);
             $postData = [
 
                 'message' => $randomMessage->message,
-                'recipient' =>$parent->user->contacts
+                'recipient' =>"255745884099"
             ];
              $this->smsService->sms_oasis($postData);
-            }
+        
+        $parent_guardians = ParentsGuardians::all();
+
+        // foreach ($parent_guardians as $parent) {
+        //     $randomMessage = Notification::inRandomOrder()->first();   
+        //     Log::info("This is the post message sent", [$randomMessage->message,$parent->user->contacts]);
+        //     $postData = [
+
+        //         'message' => $randomMessage->message,
+        //         'recipient' =>$parent->user->contacts
+        //     ];
+        //      $this->smsService->sms_oasis($postData);
+        //     }
        
         // $randomMessage = Notification::inRandomOrder()->first();   
         // // Log::info("This is the post message sent", [$randomMessage->message,$parent->user->contacts]);

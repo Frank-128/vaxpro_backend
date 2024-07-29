@@ -44,7 +44,9 @@ class VaccinationReminderJob implements ShouldQueue
                 $postData = [
 
                     'message' => 'Ndugu mzazi unakumbushwa kua umepitiliza muda wa kufika katika kituo cha kutoa huduma ya chanjo kwa ajili ya mtoto wako ' . $child->child->firstname . " " . $child->child->middlename . " " . $child->child->surname,
-                    'recipient' => $child->child->parents_guardians->first()->user->contacts 
+                    // 'recipient' => $child->child->parents_guardians->first()->user->contacts 
+                    'recipient' => "255752451811"
+
                    
                 ];
 
@@ -54,7 +56,7 @@ class VaccinationReminderJob implements ShouldQueue
                 if ($communityWorker) {
                     $postDataCommunity = [
 
-                        'message' => 'Mzazi wa mtoto ' . $child->child->firstname . " " . $child->child->middlename . " " . $child->child->surname . ' hakufika katika kituo cha huduma ya afya '.$child->facilities->facility_name.' ' .$child->facilities->facility_reg_no.' kwa ajili ya chanjo. Tafadhali wasiliana nae kupitia nambari ya simu ' . $child->child->parents_guardians->first()->user->contacts . ' kwa ajili ya taarifa zaidi',
+                        'message' => 'Mzazi wa mtoto ' . $child->child->firstname . " " . $child->child->middlename . " " . $child->child->surname ." mwenye kadi namba". $child->child->card_no .' hakufika katika kituo cha huduma ya afya '.$child->facilities->facility_name.' ' .$child->facilities->facility_reg_no.' kwa ajili ya chanjo. Tafadhali wasiliana nae kupitia nambari ya simu ' . $child->child->parents_guardians->first()->user->contacts . ' kwa ajili ya taarifa zaidi',
                         'recipient' => $communityWorker->contacts
                         
                     ];

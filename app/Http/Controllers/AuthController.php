@@ -196,7 +196,7 @@ class AuthController extends Controller
 //        }
 
         if (Auth::attempt($credentials)) {
-            
+
             if(Auth::user()->role->account_type=="parent"){
                 $token = $request->user()->createToken("vaxPro")->plainTextToken;
                 return response()->json(
