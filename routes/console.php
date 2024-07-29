@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Schedule;
 
 
 
+
 // Schedule::job(VaccinationPromotionJob::class)->weeklyOn(1, '08:00'); 
 // Schedule::job(VaccinationPromotionJob::class)->weeklyOn(3, '08:00'); 
 // Schedule::job(VaccinationPromotionJob::class)->weeklyOn(5, '08:00'); 
