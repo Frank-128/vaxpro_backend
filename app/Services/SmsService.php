@@ -16,7 +16,7 @@ class SmsService
         $this->secretKey = $secretKey;
     }
 
-    public function sendSms($postData)
+    public function sms_oasis($postData)
     {
         $postData = [
             'source_addr' => 'VaxPro',
@@ -25,7 +25,7 @@ class SmsService
             'message' => $postData["message"],
             'recipients' => [
                 [
-                    'recipient_id' => '1', 
+                    'recipient_id' => '1',
                     'dest_addr' => $postData['recipient']
                 ]
             ]
@@ -119,7 +119,7 @@ class SmsService
     }
 
 
-    public function sms_oasis($postData)
+    public function sendSms($postData)
     {
 
 
